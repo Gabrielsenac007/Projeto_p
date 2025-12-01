@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 from PIL import Image
-from deepface import DeepFace
+DeepFace = None
 from transformers import AutoTokenizer, pipeline
 from keras.models import load_model
 import joblib
@@ -138,6 +138,10 @@ def get_text_features(text):
 
 
 def extract_facial(img_path):
+    global DeepFace
+    if DeepFace is None:
+        from deepface import DeepFace
+        
     emb = DeepFace.represent(img_path, model_name="ArcFace",
                              enforce_detection=False,
                              detector_backend="skip")[0]["embedding"]
